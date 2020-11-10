@@ -39,6 +39,7 @@
             this.cmbDrive.Name = "cmbDrive";
             this.cmbDrive.Size = new System.Drawing.Size(64, 21);
             this.cmbDrive.TabIndex = 0;
+            this.cmbDrive.SelectedIndexChanged += new System.EventHandler(this.cmbDrive_SelectedIndexChanged);
             // 
             // btnScan
             // 
@@ -48,6 +49,7 @@
             this.btnScan.TabIndex = 1;
             this.btnScan.Text = "Scan drive";
             this.btnScan.UseVisualStyleBackColor = true;
+            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
             // 
             // frmMain
             // 
