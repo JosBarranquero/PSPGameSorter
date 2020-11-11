@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace PSPGameSorter
@@ -62,7 +63,7 @@ namespace PSPGameSorter
             foreach (string gamePath in gameResults)
             {
                 string name = new DirectoryInfo(gamePath).Name;
-                _driveGames.Add(new Game(name, gamePath));
+                _driveGames.Add(new Game(name, gamePath + string.Format(@"\{0}", Strings.PSP_EBOOT)));
             }
 
             _driveGames.Sort();     // We first sort alphabetically
@@ -74,6 +75,34 @@ namespace PSPGameSorter
             }
 
             return gameList;
+        }
+
+        /**
+         * Move the game in the list
+         */
+        public void MoveGame(int position, int direction)
+        {
+            Game aux = _driveGames[position];
+            _driveGames.RemoveAt(position);
+            _driveGames.Insert(position + direction, aux);
+        }
+
+        public void Sort()
+        {
+            _driveGames.Reverse();
+
+            foreach (Game game in _driveGames)
+            {
+                try
+                { 
+                    File.SetCreationTime(game.Path, DateTime.Now);
+                    File.SetLastWriteTime(game.Path, DateTime.Now);
+                } catch (Exception e) 
+                { 
+                    _driveGames.Reverse();
+                    throw;
+                }
+            }
         }
     }
 }

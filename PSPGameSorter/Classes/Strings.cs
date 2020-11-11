@@ -5,6 +5,7 @@
         // PSP folders
         public static string PSP_ISO = "ISO\\";
         public static string PSP_GAME = "PSP\\GAME\\";
+        public static string PSP_EBOOT = "EBOOT.PBP"; 
 
         // Errors
         public static string NO_DRIVES_MESSAGE = "How are you even running Windows?\nThere's not even a single active drive...\nWill close now";

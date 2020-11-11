@@ -79,22 +79,24 @@
             // btnUp
             // 
             this.btnUp.Enabled = false;
-            this.btnUp.Location = new System.Drawing.Point(384, 113);
+            this.btnUp.Location = new System.Drawing.Point(384, 131);
             this.btnUp.Name = "btnUp";
             this.btnUp.Size = new System.Drawing.Size(28, 23);
             this.btnUp.TabIndex = 4;
             this.btnUp.Text = "↑";
             this.btnUp.UseVisualStyleBackColor = true;
+            this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
             // 
             // btnDown
             // 
             this.btnDown.Enabled = false;
-            this.btnDown.Location = new System.Drawing.Point(384, 187);
+            this.btnDown.Location = new System.Drawing.Point(384, 177);
             this.btnDown.Name = "btnDown";
             this.btnDown.Size = new System.Drawing.Size(28, 23);
             this.btnDown.TabIndex = 5;
             this.btnDown.Text = "↓";
             this.btnDown.UseVisualStyleBackColor = true;
+            this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
             // 
             // btnSort
             // 
@@ -105,6 +107,7 @@
             this.btnSort.TabIndex = 6;
             this.btnSort.Text = "Sort";
             this.btnSort.UseVisualStyleBackColor = true;
+            this.btnSort.Click += new System.EventHandler(this.btnSort_Click);
             // 
             // frmMain
             // 

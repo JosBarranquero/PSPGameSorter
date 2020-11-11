@@ -20,22 +20,7 @@ namespace PSPGameSorter
          */
         private void frmMain_Load(object sender, EventArgs e)
         {
-            DriveInfo[] allDrives = DriveInfo.GetDrives();
-
-            foreach (DriveInfo drive in allDrives)
-            {
-                cmbDrive.Items.Add(drive.Name);
-            }
-
-            // We always select the first drive, which should always exist, but just in case...
-            try
-            {
-                cmbDrive.SelectedIndex = 0;
-            } catch (ArgumentOutOfRangeException ex)
-            {
-                MessageBox.Show(Strings.NO_DRIVES_MESSAGE, ex.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.Close();
-            }
+            LoadDrives();
         }
 
         private void btnScan_Click(object sender, EventArgs e)
@@ -76,6 +61,64 @@ namespace PSPGameSorter
             lbContent.Enabled = false;
 
             lbContent.Items.Clear();
+
+            LoadDrives();
+        }
+
+        private void btnSort_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                utils.Sort();
+            } catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Strings.NO_FOLDER_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+        }
+
+        private void btnUp_Click(object sender, EventArgs e)
+        {
+            if (lbContent.SelectedIndex > 0)
+                MoveGame(lbContent.SelectedIndex, -1);
+        }
+
+        private void btnDown_Click(object sender, EventArgs e)
+        {
+            if (lbContent.SelectedIndex < lbContent.Items.Count - 1)
+                MoveGame(lbContent.SelectedIndex, 1);
+        }
+
+        private void MoveGame(int pos, int dir)
+        {
+            utils.MoveGame(pos, dir);
+            
+            string aux = lbContent.SelectedItem.ToString();
+            lbContent.Items.RemoveAt(pos);
+            lbContent.Items.Insert(pos + dir, aux);
+
+            lbContent.SelectedIndex = pos + dir;
+        }
+
+        private void LoadDrives()
+        {
+            DriveInfo[] allDrives = DriveInfo.GetDrives();
+
+            foreach (DriveInfo drive in allDrives)
+            {
+                cmbDrive.Items.Add(drive.Name);
+            }
+
+            // We always select the first drive, which should always exist, but just in case...
+            try
+            {
+                cmbDrive.SelectedIndex = 0;
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                MessageBox.Show(Strings.NO_DRIVES_MESSAGE, ex.GetType().Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
         }
     }
 }
