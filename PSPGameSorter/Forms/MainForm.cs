@@ -1,6 +1,5 @@
 ﻿using MetroSet_UI.Forms;
 using System;
-using System.IO;
 using System.Windows.Forms;
 
 namespace PSPGameSorter
@@ -25,21 +24,23 @@ namespace PSPGameSorter
         {
             // Quick and dirty fix
             // When back of the form is double clicked, it maximizes
-            this.WindowState = FormWindowState.Normal;
+            if (this.WindowState == FormWindowState.Maximized)
+                this.WindowState = FormWindowState.Normal;        
         }
 
         private void btnScan_Click(object sender, EventArgs e)
         {
-            if (!utils.CheckFolders())      // If the ISO and PSP/GAME folders don't exist, can't continue
-            {
-                MetroSetMessageBox.Show(this, Strings.NO_FOLDER_MESSAGE, Strings.NO_FOLDER_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
             try
             {
+                utils.CheckFolders();
                 lbContent.Items.AddRange(utils.RetrieveGames());
-            } catch (MissingGamesException ex)
+            }
+            catch (MissingFoldersException ex)      // The folders don't exist, can't continue
+            {
+                MetroSetMessageBox.Show(this, ex.Message, Strings.NO_FOLDER_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            catch (MissingGamesException ex)        // There are no games in the folders, can't continue
             {
                 MetroSetMessageBox.Show(this, ex.Message, Strings.NO_GAMES_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -128,7 +129,7 @@ namespace PSPGameSorter
         {
             try
             {
-                cmbDrive.Items.AddRange(DriveInfo.GetDrives());     // Show all drives in combo
+                cmbDrive.Items.AddRange(utils.GetDrives());     // Show all drives in combo
                 cmbDrive.SelectedIndex = 0;  // We always select the first drive, which should always exist, but just in case...
             }
             catch (ArgumentOutOfRangeException ex)

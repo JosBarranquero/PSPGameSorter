@@ -35,16 +35,25 @@ namespace PSPGameSorter
         private Utils() { } // Making the class constructor private
 
         /// <summary>
-        /// Check for presence of ISO/ and PSP/GAME/ folders in the drive
-        /// TODO, remove bool return, make it throw an exception, for sexual reasons
+        /// Just a wrapper to DriveInfo.GetDrives()
         /// </summary>
-        /// <returns></returns>
-        public bool CheckFolders()
+        /// <returns>Available drives in system</returns>
+        public DriveInfo[] GetDrives()
+        {
+            return DriveInfo.GetDrives();
+        }
+
+        /// <summary>
+        /// Check for presence of ISO/ and PSP/GAME/ folders in the drive
+        /// </summary>
+        /// <exception cref="MissingFoldersException">If folders aren't present in drive</exception>
+        public void CheckFolders()
         {
             string isoFolder = _curDrive + Strings.PSP_ISO;
             string gameFolder = _curDrive + Strings.PSP_GAME;
 
-            return (Directory.Exists(isoFolder) && Directory.Exists(gameFolder));
+            if (!Directory.Exists(isoFolder) && !Directory.Exists(gameFolder))
+                throw new MissingFoldersException();
         }
 
         /// <summary>
